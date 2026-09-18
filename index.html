@@ -16,13 +16,12 @@
   .header button { background: none; border: none; color: #fff; padding: 4px; cursor: pointer; }
   .bell-wrap { position: relative; }
   .badge { position: absolute; top: -4px; right: -4px; background: #D32F2F; color: #fff; font-size: 10px; font-weight: 700; border-radius: 10px; min-width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; padding: 0 3px; }
-  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 14px 12px 0; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 14px 12px 0; }
   .tile { border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; border: none; }
   .tile .num { font-size: 22px; font-weight: 700; display: block; margin-top: 2px; }
   .tile .lbl { font-size: 10.5px; font-weight: 600; }
   .tile-due { background: #FFE9CC; } .tile-due .lbl { color: #7A3E00; } .tile-due .num { color: #F57C00; }
   .tile-overdue { background: #FBDADA; } .tile-overdue .lbl { color: #7A1414; } .tile-overdue .num { color: #D32F2F; }
-  .tile-inactive { background: #E6E6E6; } .tile-inactive .lbl { color: #3A3A3A; } .tile-inactive .num { color: #616161; }
   .tile-all { background: #D6E8FB; } .tile-all .lbl { color: #0D3D6B; } .tile-all .num { color: #1565C0; }
   .add-btn { display: block; width: calc(100% - 24px); margin: 12px auto 0; background: #2E7D32; color: #fff; border: none; border-radius: 8px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; }
   .section-title { padding: 16px 16px 8px; font-size: 17px; font-weight: 700; color: #1A1A1A; }
@@ -30,14 +29,14 @@
   .filter-tab { flex: 1; text-align: center; padding: 9px 0; border-radius: 8px; background: #E9E9E9; color: #444; font-size: 14px; font-weight: 600; border: none; cursor: pointer; }
   .filter-tab.active { background: #D32F2F; color: #fff; }
   .filter-tab.active.due { background: #F57C00; }
-  .filter-tab.active.inactive { background: #616161; }
+  .filter-tab.active.all { background: #1565C0; }
   .list { padding: 0 12px; }
   .card { background: #fff; border-radius: 10px; padding: 14px; margin-bottom: 10px; border: 1px solid #E5E7EB; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
   .card-name { color: #1565C0; font-weight: 700; font-size: 16px; margin: 0; cursor: pointer; }
   .card-sub { color: #6B7280; font-size: 13px; margin: 2px 0 8px; }
   .tag { font-size: 11px; font-weight: 700; color: #fff; border-radius: 6px; padding: 4px 9px; white-space: nowrap; }
-  .tag-overdue { background: #D32F2F; } .tag-due { background: #F57C00; } .tag-upcoming { background: #2E7D32; } .tag-inactive { background: #616161; }
+  .tag-overdue { background: #D32F2F; } .tag-due { background: #F57C00; } .tag-upcoming { background: #2E7D32; }
   .hr { border: none; border-top: 1px solid #EEE; margin: 8px 0; }
   .row { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: #1A1A1A; margin: 3px 0; }
   .row .val { font-weight: 700; }
@@ -46,7 +45,7 @@
   .icon-btns { display: flex; gap: 10px; }
   .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: #E8F0FE; display: flex; align-items: center; justify-content: center; color: #1565C0; text-decoration: none; }
   .empty { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
-  .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 460px; background: #fff; border-top: 1px solid #E5E7EB; display: flex; justify-content: space-around; padding: 8px 0 10px; }
+  .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 460px; background: #fff; border-top: 1px solid #E5E7EB; display: flex; justify-around; padding: 8px 0 10px; }
   .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #888; cursor: pointer; position: relative; }
   .nav-btn.active { color: #1565C0; }
   .nav-label { font-size: 10px; font-weight: 600; }
@@ -63,6 +62,7 @@
   .btn-primary { flex: 1; background: #1565C0; color: #fff; border: none; border-radius: 8px; padding: 12px; font-weight: 600; cursor: pointer; }
   .btn-danger { background: #D32F2F; color: #fff; }
   .settings-item { background: #fff; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px; margin: 0 16px 10px; display: flex; justify-content: space-between; align-items: center; }
+
 /* Hide Tiiny Host promotional banner */
 #tiiny-host-banner, 
 div[id*="tiiny"], 
@@ -77,10 +77,10 @@ iframe[src*="tiiny"] {
 /* Ensure the app content leaves room for bottom navigation */
 #app {
   padding-bottom: 90px !important;
+}
 </style>
 </head>
 <body>
-
 
 <div id="app"></div>
 
@@ -114,12 +114,8 @@ iframe[src*="tiiny"] {
   function derive(lead){
     var today = todayStr();
     var daysUntil = daysBetween(lead.nextFollowUp, today);
-    var daysSinceLast = lead.lastFollowUp ? daysBetween(today, lead.lastFollowUp) : 0;
-    var autoInactive = lead.lastFollowUp && daysSinceLast > 30;
-    var isInactive = lead.inactive === true || (lead.inactive !== false && autoInactive);
     var status;
-    if (isInactive) status = 'inactive';
-    else if (daysUntil < 0) status = 'overdue';
+    if (daysUntil < 0) status = 'overdue';
     else if (daysUntil === 0) status = 'due';
     else status = 'upcoming';
     return { daysUntil: daysUntil, status: status, daysLate: Math.abs(daysUntil) };
@@ -127,11 +123,10 @@ iframe[src*="tiiny"] {
 
   function seed(){
     return [
-      {id: 'l1', name: 'John Williams', company: 'XYZ Corp', dealStatus: 'Proposal Sent', phone: '5550101', email: 'john@xyzcorp.com', lastFollowUp: '2026-08-20', nextFollowUp: '2026-08-30', notes: 'Call to discuss proposal', inactive: null},
-      {id: 'l2', name: 'Priya Sharma', company: 'ABC Ltd.', dealStatus: 'Demo Pending', phone: '5550102', email: 'priya@abcltd.com', lastFollowUp: '2026-09-01', nextFollowUp: '2026-09-10', notes: 'Schedule product demo', inactive: null},
-      {id: 'l3', name: 'Michael Rao', company: 'Global Tech', dealStatus: 'Quote Sent', phone: '5550103', email: 'michael@globaltech.com', lastFollowUp: '2026-09-05', nextFollowUp: todayStr(), notes: 'Follow up on quotation', inactive: null},
-      {id: 'l4', name: 'Sarah Lee', company: 'Nova Inc.', dealStatus: 'Contract Review', phone: '5550104', email: 'sarah@novainc.com', lastFollowUp: '2026-09-08', nextFollowUp: '2026-09-20', notes: 'Send updated contract', inactive: null},
-      {id: 'l5', name: 'Tom Becker', company: 'Delta Co.', dealStatus: 'Cold Lead', phone: '5550105', email: 'tom@deltaco.com', lastFollowUp: '2026-07-01', nextFollowUp: '2026-07-15', notes: 'No response in weeks', inactive: null}
+      {id: 'l1', name: 'John Williams', company: 'XYZ Corp', dealStatus: 'Proposal Sent', phone: '5550101', email: 'john@xyzcorp.com', lastFollowUp: '2026-08-20', nextFollowUp: '2026-08-30', notes: 'Call to discuss proposal'},
+      {id: 'l2', name: 'Priya Sharma', company: 'ABC Ltd.', dealStatus: 'Demo Pending', phone: '5550102', email: 'priya@abcltd.com', lastFollowUp: '2026-09-01', nextFollowUp: '2026-09-10', notes: 'Schedule product demo'},
+      {id: 'l3', name: 'Michael Rao', company: 'Global Tech', dealStatus: 'Quote Sent', phone: '5550103', email: 'michael@globaltech.com', lastFollowUp: '2026-09-05', nextFollowUp: todayStr(), notes: 'Follow up on quotation'},
+      {id: 'l4', name: 'Sarah Lee', company: 'Nova Inc.', dealStatus: 'Contract Review', phone: '5550104', email: 'sarah@novainc.com', lastFollowUp: '2026-09-08', nextFollowUp: '2026-09-20', notes: 'Send updated contract'}
     ];
   }
 
@@ -154,14 +149,13 @@ iframe[src*="tiiny"] {
   }
 
   function counts(){
-    var due=0, overdue=0, inactive=0;
+    var due=0, overdue=0;
     leads.forEach(function(l){
       var d = derive(l);
       if (d.status === 'overdue') overdue++;
       else if (d.status === 'due') due++;
-      else if (d.status === 'inactive') inactive++;
     });
-    return { due: due, overdue: overdue, inactive: inactive, all: leads.length };
+    return { due: due, overdue: overdue, all: leads.length };
   }
 
   function setTab(t){ mainTab = t; render(); }
@@ -194,8 +188,7 @@ iframe[src*="tiiny"] {
       email: f.email.value.trim(),
       lastFollowUp: f.lastFollowUp.value || todayStr(),
       nextFollowUp: nextDate,
-      notes: f.notes.value.trim(),
-      inactive: f.markInactive.checked ? true : null
+      notes: f.notes.value.trim()
     };
     if (editId) {
       leads = leads.map(function(l){ return l.id === editId ? Object.assign({}, l, data) : l; });
@@ -229,7 +222,7 @@ iframe[src*="tiiny"] {
   function renderCard(lead){
     var d = derive(lead);
     var tagClass = 'tag-' + (d.status === 'due' ? 'due' : d.status);
-    var tagLabel = d.status === 'overdue' ? 'Overdue' : d.status === 'due' ? 'Due today' : d.status === 'inactive' ? 'Inactive' : 'Upcoming';
+    var tagLabel = d.status === 'overdue' ? 'Overdue' : d.status === 'due' ? 'Due today' : 'Upcoming';
     var nextLine;
     if (d.status === 'overdue') nextLine = '<span class="red val">'+fmtDate(lead.nextFollowUp)+' ('+d.daysLate+' days late)</span>';
     else if (d.status === 'due') nextLine = '<span class="amber val">'+fmtDate(lead.nextFollowUp)+' (today)</span>';
@@ -260,13 +253,16 @@ iframe[src*="tiiny"] {
 
   function renderLeadsScreen(){
     var c = counts();
-    var filtered = leads.filter(function(l){ return derive(l).status === (filterTab === 'due' ? 'due' : filterTab) || (filterTab === 'due' && derive(l).status === 'upcoming'); });
+    var filtered = leads.filter(function(l){ 
+      if (filterTab === 'all') return true;
+      var st = derive(l).status;
+      return st === filterTab || (filterTab === 'due' && st === 'upcoming'); 
+    });
     var listHtml = filtered.length ? filtered.map(renderCard).join('') : '<div class="empty">No leads in this view.</div>';
     return '' +
     '<div class="tiles">' +
       '<button class="tile tile-due" onclick="app.setFilter(\'due\')"><span class="lbl">Due today</span><span class="num">'+c.due+'</span></button>' +
       '<button class="tile tile-overdue" onclick="app.setFilter(\'overdue\')"><span class="lbl">Overdue</span><span class="num">'+c.overdue+'</span></button>' +
-      '<button class="tile tile-inactive" onclick="app.setFilter(\'inactive\')"><span class="lbl">Inactive</span><span class="num">'+c.inactive+'</span></button>' +
       '<button class="tile tile-all" onclick="app.setFilter(\'all\')"><span class="lbl">All leads</span><span class="num">'+c.all+'</span></button>' +
     '</div>' +
     '<button class="add-btn" onclick="app.openForm()">+ Add follow-up</button>' +
@@ -274,7 +270,7 @@ iframe[src*="tiiny"] {
     '<div class="filter-tabs">' +
       '<button class="filter-tab due '+(filterTab==='due'?'active':'')+'" onclick="app.setFilter(\'due\')">Due</button>' +
       '<button class="filter-tab '+(filterTab==='overdue'?'active':'')+'" onclick="app.setFilter(\'overdue\')">Overdue</button>' +
-      '<button class="filter-tab inactive '+(filterTab==='inactive'?'active':'')+'" onclick="app.setFilter(\'inactive\')">Inactive</button>' +
+      '<button class="filter-tab all '+(filterTab==='all'?'active':'')+'" onclick="app.setFilter(\'all\')">All</button>' +
     '</div>' +
     '<div class="list">'+listHtml+'</div>';
   }
@@ -310,7 +306,6 @@ iframe[src*="tiiny"] {
           '<div class="field"><label>Last follow-up date</label><input name="lastFollowUp" type="date" value="'+(v.lastFollowUp||'')+'"></div>' +
           '<div class="field"><label>Next follow-up date</label><input name="nextFollowUp" type="date" value="'+(v.nextFollowUp||'')+'"></div>' +
           '<div class="field"><label>Notes / task</label><textarea name="notes" placeholder="What needs to happen next">'+esc(v.notes)+'</textarea></div>' +
-          '<div class="field" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" name="markInactive" id="mi" style="width:auto;" '+(v.inactive===true?'checked':'')+'><label for="mi" style="margin:0;">Mark as inactive</label></div>' +
           (formError ? '<div class="err">'+esc(formError)+'</div>' : '') +
           '<div class="sheet-actions">' +
             '<button type="button" class="btn-secondary" onclick="app.closeForm()">Cancel</button>' +
