@@ -63,7 +63,6 @@
   .btn-danger { background: #D32F2F; color: #fff; }
   .settings-item { background: #fff; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px; margin: 0 16px 10px; display: flex; justify-content: space-between; align-items: center; }
 
-/* Hide Tiiny Host promotional banner */
 #tiiny-host-banner, 
 div[id*="tiiny"], 
 div[class*="tiiny"], 
@@ -74,7 +73,6 @@ iframe[src*="tiiny"] {
   pointer-events: none !important;
 }
 
-/* Ensure the app content leaves room for bottom navigation */
 #app {
   padding-bottom: 90px !important;
 }
@@ -86,7 +84,8 @@ iframe[src*="tiiny"] {
 
 <script>
 (function(){
-  var STORAGE_KEY = 'followup_leads_v1';
+  // Key increment forces browser to clear old stored state
+  var STORAGE_KEY = 'followup_leads_v2';
   var leads = [];
   var mainTab = 'leads';
   var filterTab = 'overdue';
