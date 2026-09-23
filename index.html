@@ -47,7 +47,7 @@
   .icon-btns { display: flex; gap: 10px; }
   .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: #E8F0FE; display: flex; align-items: center; justify-content: center; color: #1565C0; text-decoration: none; }
   .empty { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
-  .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 460px; background: #fff; border-top: 1px solid #E5E7EB; display: flex; justify-content: space-around; padding: 8px 0 10px; }
+  .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 460px; background: #fff; border-top: 1px solid #E5E7EB; display: flex; justify-around: space-around; padding: 8px 0 10px; }
   .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #888; cursor: pointer; position: relative; }
   .nav-btn.active { color: #1565C0; }
   .nav-label { font-size: 10px; font-weight: 600; }
@@ -67,7 +67,6 @@
 </style>
 </head>
 <body>
-
 
 <div id="app"></div>
 <input type="file" accept="image/*" capture="environment" id="cameraInput" style="display:none">
@@ -220,9 +219,13 @@
   }
 
   function esc(s){
-    var d = document.createElement('div');
-    d.innerText = s == null ? '' : s;
-    return d.innerHTML;
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function parseCardText(text){
